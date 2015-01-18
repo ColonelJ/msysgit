@@ -1,0 +1,25 @@
+From 103663405c92f69ba440a574a3429bdf89ed3ecb Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 18 Jan 2015 20:13:52 +0000
+Subject: [PATCH] Remove -L switch to file in libtool
+
+---
+ ltmain.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ltmain.sh b/ltmain.sh
+index 7ed280b..1049397 100644
+--- a/ltmain.sh
++++ b/ltmain.sh
+@@ -2553,7 +2553,7 @@ func_win32_libid ()
+ {
+   $opt_debug
+   win32_libid_type="unknown"
+-  win32_fileres=`file -L $1 2>/dev/null`
++  win32_fileres=`file $1 2>/dev/null`
+   case $win32_fileres in
+   *ar\ archive\ import\ library*) # definitely import
+     win32_libid_type="x86 archive import"
+-- 
+2.1.0
+
