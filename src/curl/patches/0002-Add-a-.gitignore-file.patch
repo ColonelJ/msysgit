@@ -1,7 +1,7 @@
-From ea37b5f56c7f34fe21c9e5cf93253e0392bf91d3 Mon Sep 17 00:00:00 2001
+From 7add9c747142ee5a2f519fe9682af40431625221 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Sat, 25 Jul 2009 17:44:54 +0200
-Subject: [PATCH 2/3] Add a .gitignore file
+Subject: [PATCH 2/4] Add a .gitignore file
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
@@ -34,5 +34,5 @@ index 0000000..67aaa4d
 +/config.status
 +/curl-config
 -- 
-1.8.1.msysgit.1
+2.1.0
 
