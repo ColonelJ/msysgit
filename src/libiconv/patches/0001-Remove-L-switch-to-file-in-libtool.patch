@@ -1,0 +1,39 @@
+From 62b18bdccd298e6ae57dbe355afd82dff50261e9 Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 18 Jan 2015 16:16:00 +0000
+Subject: [PATCH] Remove -L switch to file in libtool
+
+---
+ build-aux/ltmain.sh            | 2 +-
+ libcharset/build-aux/ltmain.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/build-aux/ltmain.sh b/build-aux/ltmain.sh
+index 3061e3c..60ff2f9 100644
+--- a/build-aux/ltmain.sh
++++ b/build-aux/ltmain.sh
+@@ -3540,7 +3540,7 @@ func_win32_libid ()
+ {
+   $opt_debug
+   win32_libid_type="unknown"
+-  win32_fileres=`file -L $1 2>/dev/null`
++  win32_fileres=`file $1 2>/dev/null`
+   case $win32_fileres in
+   *ar\ archive\ import\ library*) # definitely import
+     win32_libid_type="x86 archive import"
+diff --git a/libcharset/build-aux/ltmain.sh b/libcharset/build-aux/ltmain.sh
+index 3061e3c..60ff2f9 100644
+--- a/libcharset/build-aux/ltmain.sh
++++ b/libcharset/build-aux/ltmain.sh
+@@ -3540,7 +3540,7 @@ func_win32_libid ()
+ {
+   $opt_debug
+   win32_libid_type="unknown"
+-  win32_fileres=`file -L $1 2>/dev/null`
++  win32_fileres=`file $1 2>/dev/null`
+   case $win32_fileres in
+   *ar\ archive\ import\ library*) # definitely import
+     win32_libid_type="x86 archive import"
+-- 
+2.1.0
+
