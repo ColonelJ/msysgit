@@ -61,3 +61,6 @@ GNU Gettext Utilities
                                 Unify duplicates for PO file.
 * ngettext: (gettext)ngettext Invocation.
                                 Translate a message with plural.
+
+Individual utilities
+* msmtp: (msmtp).                               An SMTP client.
