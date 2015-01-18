@@ -1,9 +1,9 @@
 [submodule "git"]
 	path = git
-	url = https://github.com/msysgit/git.git
+	url = git@github.com:ColonelJ/git.git
 [submodule "html"]
 	path = doc/git/html
-	url = https://github.com/gitster/git-htmldocs.git
+	url = git@github.com:ColonelJ/git-htmldocs.git
 [submodule "git-cheetah"]
 	path = src/git-cheetah
-	url = https://github.com/msysgit/Git-Cheetah.git
+	url = git@github.com:ColonelJ/Git-Cheetah.git
