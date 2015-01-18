@@ -22,13 +22,15 @@
  */
 #define __MINGW_H
 
-#define __MINGW32_VERSION           3.15.2
+#define __MINGW32_VERSION           3.20
 #define __MINGW32_MAJOR_VERSION     3
-#define __MINGW32_MINOR_VERSION     15
-#define __MINGW32_PATCHLEVEL        2
+#define __MINGW32_MINOR_VERSION     20
+#define __MINGW32_PATCHLEVEL        0
 
 #if __GNUC__ >= 3
+#ifndef __PCC__
 #pragma GCC system_header
+#endif
 #endif
 
 /* These are defined by the user (or the compiler)
@@ -76,16 +78,46 @@
 /* Try to avoid problems with outdated checks for GCC __attribute__ support.  */
 #undef __attribute__
 
-#ifndef __GNUC__
+#if defined (__PCC__)
+#  undef __DECLSPEC_SUPPORTED
 # ifndef __MINGW_IMPORT
-#  define __MINGW_IMPORT  __declspec(dllimport)
+#  define __MINGW_IMPORT extern
 # endif
 # ifndef _CRTIMP
-#  define _CRTIMP  __declspec(dllimport)
+#  define _CRTIMP
 # endif
-# define __DECLSPEC_SUPPORTED
-# define __attribute__(x) /* nothing */
-#else /* __GNUC__ */
+# ifndef __cdecl 
+#  define __cdecl  _Pragma("cdecl")
+# endif
+# ifndef __stdcall
+#  define __stdcall _Pragma("stdcall")
+# endif
+# ifndef __int64
+#  define __int64 long long
+# endif
+# ifndef __int32
+#  define __int32 long
+# endif
+# ifndef __int16
+#  define __int16 short
+# endif
+# ifndef __int8
+#  define __int8 char
+# endif
+# ifndef __small
+#  define __small char
+# endif
+# ifndef __hyper
+#  define __hyper long long
+# endif
+# ifndef __volatile__
+#  define __volatile__ volatile
+# endif
+# ifndef __restrict__
+#  define __restrict__ restrict
+# endif
+# define NONAMELESSUNION
+#elif defined(__GNUC__)
 # ifdef __declspec
 #  ifndef __MINGW_IMPORT
    /* Note the extern. This is needed to work around GCC's
@@ -107,12 +139,11 @@
 #   define _CRTIMP
 #  endif
 # endif /* __declspec */
-
 /*
-   The next two defines can cause problems if user code adds the __cdecl attribute
-   like so:
-   void __attribute__ ((__cdecl)) foo(void); 
-*/
+ * The next two defines can cause problems if user code adds the
+ * __cdecl attribute like so:
+ * void __attribute__ ((__cdecl)) foo(void); 
+ */
 # ifndef __cdecl 
 #  define __cdecl  __attribute__ ((__cdecl__))
 # endif
@@ -137,7 +168,16 @@
 # ifndef __hyper
 #  define __hyper long long
 # endif
-#endif /* __GNUC__ */
+#else /* ! __GNUC__ && ! __PCC__ */
+# ifndef __MINGW_IMPORT
+#  define __MINGW_IMPORT  __declspec(dllimport)
+# endif
+# ifndef _CRTIMP
+#  define _CRTIMP  __declspec(dllimport)
+# endif
+# define __DECLSPEC_SUPPORTED
+# define __attribute__(x) /* nothing */
+#endif
 
 #if defined (__GNUC__) && defined (__GNUC_MINOR__)
 #define __MINGW_GNUC_PREREQ(major, minor) \
@@ -156,6 +196,12 @@
 #  define __CRT_INLINE extern __inline__
 # endif
 #endif
+
+# ifdef __GNUC__
+#  define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
+# else
+#  define _CRTALIAS __CRT_INLINE
+# endif
 
 #ifdef __cplusplus
 # define __UNUSED_PARAM(x)

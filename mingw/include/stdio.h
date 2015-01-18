@@ -220,7 +220,7 @@ extern int __mingw_stdio_redirect__(vsnprintf)(char*, size_t, const char*, __VAL
  * For C++ we use inline implementations, to avoid interference
  * with namespace qualification, which may result from using #defines.
  */
-#  define __mingw_stdio_redirect__  static inline __cdecl __MINGW_NOTHROW
+#  define __mingw_stdio_redirect__  inline __cdecl __MINGW_NOTHROW
 
 # elif defined __GNUC__
 /*
@@ -318,6 +318,7 @@ _CRTIMP int __mingw_stdio_redirect__(vsprintf)(char*, const char*, __VALIST);
  */
 _CRTIMP int __cdecl __MINGW_NOTHROW _snprintf (char*, size_t, const char*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW _vsnprintf (char*, size_t, const char*, __VALIST);
+_CRTIMP int __cdecl __MINGW_NOTHROW _vscprintf (const char*, __VALIST);
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 /*
@@ -565,6 +566,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_snwprintf (wchar_t*, size_t, const wchar_t*
 _CRTIMP int __cdecl __MINGW_NOTHROW	vfwprintf (FILE*, const wchar_t*, __VALIST);
 _CRTIMP int __cdecl __MINGW_NOTHROW	vwprintf (const wchar_t*, __VALIST);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_vsnwprintf (wchar_t*, size_t, const wchar_t*, __VALIST);
+_CRTIMP int __cdecl __MINGW_NOTHROW	_vscwprintf (const wchar_t*, __VALIST);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fwscanf (FILE*, const wchar_t*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW	wscanf (const wchar_t*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW	swscanf (const wchar_t*, const wchar_t*, ...);
@@ -601,9 +603,12 @@ _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wpopen (const wchar_t*, const wchar_t*);
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 int __cdecl __MINGW_NOTHROW snwprintf (wchar_t* s, size_t n, const wchar_t*  format, ...);
+int __cdecl __MINGW_NOTHROW vsnwprintf (wchar_t* s, size_t n, const wchar_t* format, __VALIST arg);
+#ifndef __NO_INLINE__
 __CRT_INLINE int __cdecl __MINGW_NOTHROW
 vsnwprintf (wchar_t* s, size_t n, const wchar_t* format, __VALIST arg)
   { return _vsnwprintf ( s, n, format, arg);}
+#endif
 int __cdecl __MINGW_NOTHROW vwscanf (const wchar_t * __restrict__, __VALIST);
 int __cdecl __MINGW_NOTHROW vfwscanf (FILE * __restrict__,
 		       const wchar_t * __restrict__, __VALIST);

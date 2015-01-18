@@ -1,18 +1,20 @@
-===== TDM's Experimental GCC/MinGW32 Builds =====
+=== TDM-GCC Compiler Suite for Windows ===
+---           GCC 4.9 Series           ---
+***   Standard MinGW 32-bit Edition    ***
 
-NOTICE:
-TDM-GCC is an unofficial replacement for the official GCC binaries distributed
-by the MinGW project; please note the following caveats:
- * TDM-GCC is not formally affiliated with or endorsed by the MinGW project
-    (although several MinGW team members make use of it)
- * No level of support for TDM-GCC is in any way guaranteed (although a best
-    effor is made to fix bugs as they are found or forward them to GCC Bugzilla)
+
+This edition of TDM-GCC is an unofficial replacement for the official GCC
+binaries distributed by the MinGW project; please note the following caveats:
+ * TDM-GCC is not formally affiliated with or endorsed by the MinGW project.
+ * No level of support for TDM-GCC is in any way guaranteed, although a best
+     effort is made to fix bugs as they are found or forward them to GCC
+     Bugzilla.
+
 
 BUGS:
 If you encounter a problem while using a TDM-GCC build that isn't present in a
 previous MinGW or TDM release, you are encouraged to submit a helpful bug
-report. Please see <http://www.tdragon.net/recentgcc/bugs.php> for further
-instructions.
+report. Please see <http://tdm-gcc.tdragon.net/bugs> for further instructions.
 
 
 >>>>> INSTALLATION
@@ -20,67 +22,116 @@ instructions.
 *** TDM/MinGW Installer ***
 
 Using the TDM/MinGW installer is highly recommended; it can automatically
-install TDM-GCC (or the official MinGW GCC) as well as all supplementary MinGW
-base system packages. The installer uses a standard wizard interface with
-reasonable defaults.
+install TDM-GCC (or the official MinGW GCC) as well as all supplementary base
+system packages. The installer uses a standard wizard interface with reasonable
+defaults.
 
 *** Manual Installation ***
 
-These binary packages are designed as drop-in replacements for the MinGW
-project's official gcc packages. When using these packages, you are encouraged
-to start with a clean slate and install only the MinGW packages which are
-necessary to you. You'll need the following packages for basic Windows
-development:
- * binutils (binutils-2.19.1-mingw32-bin.tar.gz)
- * mingw-runtime (mingwrt-3.15.2-mingw32-dev.tar.gz)
- * w32api (w32api-3.13-mingw32-dev.tar.gz)
-You might also want to install:
- * mingw-utils (mingw-utils-0.3.tar.gz)
- * mingw32-make (mingw32-make-3.81-20080326-3.tar.gz)
- * gdb (gdb-6.8-mingw-3.tar.bz2)
+Do not install TDM-GCC packages on top of a previous GCC installation of any
+kind.
+
+You will need to download and unpack a set of archives. A minimal base set of
+archives is required; there are also some additional components that are
+optional, adding support for additional programming languages or GCC features.
+
+TDM-GCC provides a ZIP-compressed version and a TAR.LZMA-compressed version of
+each archive. Use whichever is easiest.
+
+REQUIRED BASE:
+ * gcc-core (gcc-4.9.2-tdm-1-core)
+ * binutils (binutils-2.24-1-mingw32-bin)
+ * mingwrt (mingwrt-3.20-2-mingw32-dev, mingwrt-3.20-2-mingw32-dll)
+ * w32api (w32api-3.17-2-mingw32-dev)
+
+OPTIONAL:
+ * gcc-c++ (gcc-4.9.2-tdm-1-c++) - C++ support
+ * gcc-ada (gcc-4.9.2-tdm-1-ada) - Ada support
+ * gcc-fortran (gcc-4.9.2-tdm-1-fortran) - Fortran support
+ * gcc-objc (gcc-4.9.2-tdm-1-objc) - Objective-C/C++ support
+ * gcc-openmp (gcc-4.9.2-tdm-1-openmp) - OpenMP support
+ * mingw32-make (make-3.82.90-2-mingw32-cvs-20120902-bin,
+     libintl-0.17-1-mingw32-dll-8, libiconv-1.13.1-1-mingw32-dll-2) - GNU make
+     for *-mingw32 GCC
+ * gdb (gdb-7.6.1-1-mingw32-bin, libexpat-2.0.1-1-mingw32-dll-1) - GNU
+     source-level debugger, for mingw32
 You'll need GDB particularly if you want to use an IDE with debugging support.
 
-Decide whether to use the SJLJ or DW2 (Dwarf-2) exception model. Then, for the
-exception model of your choice, download at least the "core" TDM-GCC package,
-which includes the required base files as well as support for the C language.
-You can also download any or all of the other TDM-GCC packages, depending on
-which of GCC's supported languages you'd like to use.
-
-Extract the MinGW packages to an empty directory -- typically C:\MinGW. Then,
-extract the TDM-GCC package(s) and choose to overwrite any duplicate files that
-may exist. Finally, consider adding the bin directory to your Windows PATH
-environment variable.
+Unpack all the archives to an empty directory. You may choose any path, though
+it is recommended that you avoid a path with any spaces in the folder names.
+Finally, consider adding the bin subdirectory to your Windows PATH environment
+variable.
 
 
 >>>>> USAGE NOTES
 
-*** "Graphite" Loop Transformations ***
+*** POSIX threads, C++11 std::thread and other synchronization features ***
 
-The TDM release of GCC 4.4.0 includes support for GCC 4.4's Graphite loop
-transformation infrastructure. Because support for these optimizations is
-currently optional, they are not enabled at any of the -O optimization levels.
-If you are interested in using them, the relevant options are
-"-floop-interchange", "-floop-strip-mine", and "-floop-block", and they are
-documented at
-<http://gcc.gnu.org/onlinedocs/gcc-4.4.0/gcc/Optimize-Options.html>
+As of the 4.8.1 TDM-GCC release, a significant change has been introduced which
+allows you to use C++11 features such as std::thread that rely on the POSIX
+threading library. TDM-GCC now includes a new pthreads compatibility layer
+called "winpthreads" instead of the old "pthreads-w32".
 
-*** Dwarf-2 vs. SJLJ unwinding ***
+"winpthreads" is one of the libraries distributed by the MinGW-w64 project, and
+it allows GCC to be compiled with full pthreads compatibility, which is
+necessary to enable std::thread and other threading related functions in the
+C++ runtime.
 
-GCC supports two methods of stack frame unwinding: Dwarf-2 (DW2) or SJLJ
-(setjmp/longjmp). Until recently, only SJLJ has been available for the Windows
-platform. This affects you, the end user, primarily in programs that throw and
-catch exceptions. Programs which utilize the DW2 unwind method handle exceptions
-much more quickly than programs which utilize the SJLJ method. However, the DW2
-method increases code size by a noticeable amount, and additionally cannot yet
-unwind (pass exceptions) through "foreign" stack frames: stack frames compiled
-by another non-DW2-enabled compiler, such as OS DLLs in a Windows callback.
+Because of TDM-GCC's continuing goal of minimizing extra DLLs, winpthreads has
+been compiled statically. It will be statically linked with every program you
+compile, which will increase your baseline executable size.
+
+The same mechanism used in libgcc and libstdc++ to allow EXEs and DLLs to share
+state for handling exceptions has also been patched into winpthreads to allow
+your EXEs and DLLs to share C++11 thread handles via the underlying pthread
+handles.
+
+Because every program you compile will now rely on winpthreads, you should make
+sure to read and comply with its MIT-style license, included in the file
+"COPYING.winpthreads.txt".
+
+*** Inline member functions and DLLs ***
+
+[[[ IMPORTANT NOTE:
+[[[ You will probably need to use "-fno-keep-inline-dllexport" when building
+[[[ large DLLs with lots of inline member functions, such as the "wxWidgets"
+[[[ library's monolithic DLL.
+
+As of the 4.5 series, GCC conforms more closely to the behavior of MSVC on
+Windows platforms by always emitting inline functions that are class members
+when creating a DLL. This behavior doesn't necessarily conform to the
+expectations of libraries that are used to the old behavior, however, and in
+some cases can cause the linker to run out of memory when creating the DLL. If
+necessary, use the "-fno-keep-inline-dllexport" flag to avoid emitting these
+functions.
+
+*** LTO (Link-Time Optimization) ***
+
+Every TDM-GCC release since 4.5.1 includes support for GCC's Link-Time
+Optimizer. As long as GCC's own drivers (gcc, g++, etc.) are used at both
+compile-time and link-time, and the "-flto" option is specified at both compile-
+time and link-time, link-time optimization will be applied. See
+<http://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html> for further details.
+
+*** DW2 vs. SJLJ unwinding ***
+
+GCC currently supports two methods of stack frame unwinding: Dwarf-2 (DW2) or
+SJLJ (setjmp/longjmp). Until recently, only SJLJ has been available for the
+Windows platform. This affects you, the end user, primarily in programs that
+throw and catch exceptions. Programs which utilize the DW2 unwind method
+generally execute more quickly than programs which utilize the SJLJ method,
+because the DW2 method incurs no runtime overhead until an exception is thrown.
+However, the DW2 method does incur a size penalty on code that must handle
+exceptions, and more importantly the DW2 method cannot yet unwind (pass
+exceptions) through "foreign" stack frames: stack frames compiled by another
+non-DW2-enabled compiler, such as OS DLLs in a Windows callback.
 
 This means that you should in general choose the SJLJ version of the TDM-GCC
-builds unless you know you need faster exception handling and can be certain you
-will never throw an exception through a foreign stack area.
+builds unless you know you need faster exception-aware programs and can be
+certain you will never throw an exception through a foreign stack area.
 
 As distributed, the SJLJ and DW2 packages of TDM-GCC can coexist peacefully
-extracted to the same directory (e.g. any files in common are for all intents
+extracted to the same directory (i.e. any files in common are for all intents
 and purposes identical), because the driver executables (the ones in the "bin"
 directory) are suffixed with "-dw2" for the DW2 build, and the libraries and
 other executables hide in another "-dw2" directory in "lib(exec)/gcc/mingw32".
@@ -92,28 +143,59 @@ original names.
 
 *** Exceptions and DLLs ***
 
-The mingw32 port of GCC is gradually moving toward the generally accepted method
-the rest of the world uses in allowing exceptions to propagate out of shared
-libraries (DLLs) -- that is, reliance on a third DLL to contain state data
-for the exception handling system. For any GCC language that supports exceptions
-(and DLLs), this actually involves two extra DLLs: (1) libgcc_s*.dll, which
-contains common core data, and (2) a language-specific DLL. You will note that
-the first phase of this move (libgcc_s*.dll) finally builds correctly
-out-of-the-box, but NOT THE SECOND PHASE (the language-specific DLLs).
+[[[ IMPORTANT NOTE:
+[[[ TDM-GCC uses a statically-linked libstdc++ by default! To use the libstdc++
+[[[ DLL, specify "-shared-libstdc++" on the command line.
 
-Until such time as the language-specific DLLs build correctly, therefore,
-TDM-GCC will continue to rely on a versioned shared memory region. You do not
-need any additional command-line options to throw exceptions out of DLLs.
+With the advent of the GCC 4.5 release series, the mingw32 port finally supports
+fully the same method every other platform uses to allow exceptions to propagate
+out of shared libraries (DLLs): gcc library DLLs. For any GCC language that
+supports exceptions (and DLLs), this method requires the runtime presence of two
+additional DLLs: (1) libgcc_s*.dll, which contains common core data, and (2) a
+language-specific DLL.
 
-If you'd like to try out the new libgcc DLL for other reasons, add
-"-shared-libgcc" to the command line, but be warned -- it may *break* inter-DLL
-exceptions.
+However, TDM-GCC also continues to integrate a versioned shared memory region
+for the *static* (non-DLL) runtime libraries, which will still allow you to
+throw exceptions between any DLLs or executables that are built with TDM-GCC.
+This method incurs a very small execution overhead as compared to the shared
+library method, but has the very important benefit of not requiring you to
+redistribute extra DLLs with your program.
 
-*** OpenMP and pthreads-w32 ***
+By default, TDM-GCC will continue to create executables and DLLs that use the
+static libraries and do not require you to redistribute further DLLs. If you
+would like to use the shared libraries, you should add "-shared-libgcc" to the
+command line to use a shared version of libgcc, and additionally ensure that the
+shared version of your language-specific runtime library is being used. For C++,
+add "-shared-libstdc++".
 
-The core binary package has been built to allow the use of GCC's "-fopenmp"
-option for generating parallel code as specified by the OpenMP API. (See
-<http://gcc.gnu.org/onlinedocs/gcc-4.4.0/libgomp/> for details.)
+You cannot use a shared version of libgcc with a static version of a language-
+specific runtime. The reverse -- static libgcc with shared language-specific
+runtime -- should work fine.
+
+IMPORTANT NOTE:
+There has been an update to the license exception clause that permits you to
+distribute programs that make use of the GCC runtime libraries without requiring
+you to license your programs under the GPLv3. As always, please be familiar with
+the terms of GCC's GPLv3 license and exception clauses, and do not redistribute
+any portion of GCC, including its runtime DLLs, in any way except as granted by
+the license. If you are unclear about which permissions are granted by the
+license, please consult a lawyer and/or the Free Software Foundation
+(<http://www.fsf.org/>).
+
+A copy of the GPLv3 may be found in the file
+COPYING-gcc-tdm.txt, and a copy of the runtime library exception clause may be
+found in COPYING.RUNTIME-gcc-tdm.txt. In general, the runtime library exception
+clause probably applies to any file found in the "lib" directory or its
+subdirectories, and any DLL found in the "bin" directory -- but you should
+consult the sources, available for download from the TDM-GCC project site on
+SourceForge, if you are unsure.
+
+*** OpenMP and winpthreads ***
+
+TDM-GCC has been built to allow the use of GCC's "-fopenmp" option for
+generating parallel code as specified by the OpenMP API. (See
+<http://gcc.gnu.org/onlinedocs/libgomp/> for details.) If you want to use
+OpenMP in your programs, be sure to install the "openmp" optional package.
 
 The OpenMP support in the TDM-GCC builds has received very little testing; if
 you find build or packaging problems, please send a bug report (see BUGS above).
@@ -121,39 +203,28 @@ you find build or packaging problems, please send a bug report (see BUGS above).
 LibGOMP, GCC's implementation of OpenMP, currently only supports the use of the
 POSIX Threads (pthreads) api for implementing its threading model. Because the
 MinGW project itself doesn't distribute a pthreads implementation, the
-"pthreads-win32" library, available from http://sourceware.org/pthreads-win32/,
-is included in this distribution. If you aren't familiar with pthreads-win32,
-please read the file "pthreads-win32-README" for more information, or the
-documentation available at the website referenced above. pthreads-win32 is
-distributed under the terms of the LGPL; see "COPYING.lib-gcc-tdm.txt" for
-details.
+"winpthreads" library, available as part of the MinGW-w64 project libraries, is
+included in this distribution. The "winpthreads" library is distributed under
+the terms of an MIT-style license; see "COPYING.winpthreads.txt" for details.
 
 In order to correctly compile code that utilizes OpenMP/libGOMP, you need to add
-the "-fopenmp" option at compile time AND link time, and link to libgomp.a and
-libpthread.a at link time ("-lgomp -lpthread"). By default, libpthread.a links
-the standard C-cleanup DLL version of pthreads-win32 to your program, which
-means that you will need to ensure that the file "pthreadGC2.dll" (included in
-the "bin" subdirectory of this package) can be found by your program. If you
-plan to distribute a program that relies on pthreads-win32, be sure to
-understand and comply with the terms of the LGPL (see COPYING.lib-gcc-tdm.txt).
+the "-fopenmp" option at compile time AND link time. By default, this will link
+the static version of winpthreads to your program, and you should not need to
+distribute any additional DLLs with your program. If you plan to distribute a
+program that relies on OpenMP and winpthreads, be sure to understand and comply
+with the terms of winpthreads' license (see COPYING.winpthreads.txt).
 
-"libpthread.a" is included in the "lib/gcc/mingw32/4.4.0[-dw2]" subdirectory of
-this package along with two other pthreads library files:
- - "libpthreadGC2-static.a" provides a static version of the pthreads-win32
-     library, but it requires some additional non-POSIX-compliant startup code
-     to be included in your program. See "pthreads-win32-README" for
-     details.
- - "libpthreadGCE2.a" provides a version of the pthreads-win32 library with
-     a somewhat safer response in the face of unexpected C++ exceptions.
-     The creators of the pthreads-win32 library recommend, however, that this
-     version not be used, because code written to rely on this is less portable.
+"libpthread.a" is included in the "lib" subdirectory of the openmp package along
+with three other pthreads library files:
+ - "libpthread_s.a" and "libwinpthread.dll.a" link to a DLL version of
+     winpthreads - libwinpthread-1.dll.
+ - "libwinpthread.a" is the same as "libpthread.a".
 
 *** Warnings and errors ***
 
-GCC 4 represents a significant step forward in optimization capabilities, error
-detection, and standards compliance, and this is more true than ever with the
-most recent GCC releases. For you, the end user, this will mean that code which
-compiled and ran without problems on previous GCC releases will almost certainly
+Recent GCC releases make significant strides in optimization capabilities, error
+detection, and standards compliance. For you, the end user, this often means
+that code which compiled and ran without problems on previous GCC releases will
 exhibit some warnings and maybe even a few errors.
 
 These meaningful warnings and errors are a very good thing, as they help the
@@ -166,53 +237,61 @@ wrong result).
 If you encounter an ICE while using a TDM-GCC build, feel free to file a bug
 report (see BUGS above). With any other unexpected problem, you are urged to
 work from the assumption that it stems from user error, and ensure that your
-code is correct and standards-compliant. 
+code is correct and standards-compliant.
 
 
 >>>>> BUGS AND KNOWN ISSUES
-
- * Under rare and as-yet-unidentified circumstances, inclusion of a precompiled
-     header will cause compilation to fail with an error like "error: calling
-     fdopen: bad file descriptor or file name". It seems only to happen when the
-     PCH is double-included by both an #include directive and the -include
-     command-line switch, but this in itself will not trigger the bug.
 
 As these builds are provided on the same basis as the source releases, and the
 mingw32 target in GCC tends to receive somewhat less-than-average attention,
 some bugs are expected. If you encounter a bug that you are certain is in the
 GCC sources (such as an ICE), or that is due to an issue in the building or
 packaging process, you are encouraged to report it. Please visit the TDM-GCC
-Bugs Page at <http://www.tdragon.net/recentgcc/bugs.php> for bug reporting
-instructions.
+Bugs Page at <http://tdm-gcc.tdragon.net/bugs> for bug reporting instructions.
 
 
 >>>>> LOCAL FIXES AND CHANGES
 
- - Includes a patch ported from the official MinGW 3.4.5 release to propagate
-     exceptions out of DLLs without the need for shared versions of libgcc and
-     libstdc++.
- - Includes a patch which corrects backslash usage in header paths and fixes
-      path problems when debugging. (See
-      http://sourceforge.net/tracker2/?func=detail&aid=2145427&group_id=200665&atid=974439)
+ - Includes a patch to make libgcc and libstdc++ link statically by default. The
+     "-static-libgcc" and "-static-libstdc++" commands thereby do not have any
+     effect; use "-shared-libgcc" and "-shared-libstdc++" to link your program
+     corresponding DLLs.
+ - Includes a patch to prevent pthreads mutexes from leaking in libstdc++.
+ - Includes a patch which enables libatomic support for mingw*.
+ - Includes a patch to enable extra tools in the Ada toolchain for mingw*.
+ - Includes a patch to allow forward slashes in libiberty as path separators on
+     Windows, allowing build system integrations like map files to work better.
+ - Includes a patch to make all search paths for headers, libraries and
+     helper executables relative to the installation directory of the driver
+     executables -- in other words, TDM-GCC is fully relocatable and does not
+     search any absolute system paths.
+ - Includes a patch to allow libgomp to interoperate correctly with user-
+     generated pthreads. See
+     <https://sourceforge.net/p/tdm-gcc/bugs/76/>.
+ - Includes a patch to propagate exceptions out of DLLs without the need for
+     shared runtime libraries.
  - Includes a patch to keep GCC from erroneously using the CWD as the
      installation directory.
  - Configured with "--enable-fully-dynamic-string", which fixes a bug when
      passing empty std::string objects between DLLs and EXEs.
-
-[The following patches are only necessary for the 4.3 series and have been
-applied in the 4.4 sources]
-
- - Includes a patch to fix a crash when all temporary directory environment
-     variables are empty.
+ - Includes a patch which reintegrates the code from libgcc_eh.a into libgcc.a
+     and the libgcc DLL. As long as the shared memory region is used to handle
+     exceptions in the static runtimes, this library is unnecessary, and it
+     causes multiple definition errors for the symbols in it because it hasn't
+     been added to binutils' exception libraries yet.
+ - Includes a patch to re-enable large file support for C++ fstreams (LFS
+     detection fails because there is no definition for struct stat64 in
+     mingw-runtime).
+ - Includes a patch to fix GCC & winpthreads interop for x86 mingw32 and allow
+     use of a fully static pthreads library.
 
 
 >>>>> SOURCE CODE
 
 The source code for the TDM-GCC binary releases is available from the TDM-GCC
-download page on SourceForge:
-<http://sourceforge.net/project/showfiles.php?group_id=200665>
+download page on SourceForge: <http://sourceforge.net/projects/tdm-gcc/files/>.
 (The most up-to-date link to the download site will always be available at
-<http://www.tdragon.net/recentgcc/>.
+<http://tdm-gcc.tdragon.net/>.)
 
 The source is distributed in the form of the original ("vanilla") separate
 source packages as downloaded, plus an additional "TDM Sources" package. The TDM
@@ -220,23 +299,14 @@ Sources package includes unified diffs of any changes made to the vanilla
 sources, as well as the set of scripts used to build the binary releases.
 
 
->>>>> LICENSE
+>>>>> COMPONENT LICENSES
 
-The TDM-GCC packages contain binary distributions constituting a work based on
-GCC, CLooG, and PPL, all of which are licensed under the GPL. For further
-details, refer to the file "COPYING-gcc-tdm.txt" within the downloaded package.
-Additionally, TDM-GCC contains binary files constituting works based on
-libiconv, GMP, MPFR, and pthreads-w32, all of which are licensed under the LGPL;
-COPYING.lib-gcc-tdm.txt contains a copy of the LGPL.
-
-The TDM-GCC distribution is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 3 of the License, or (at your option) any
-later version.
-
-TDM-GCC is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program. If not, see <http://www.gnu.org/licenses/>.
+The TDM-GCC core and language packages in this edition contain binary
+distributions constituting a work based on GCC, CLooG, ISL, MPC, libiconv, GMP,
+MPFR and winpthreads. GCC itself is licensed under the GPLv3; for further
+details, see "COPYING3-gcc-tdm.txt". Additionally, GCC's runtime libraries are
+licensed with an additional exception clause; see "COPYING.RUNTIME-gcc-tdm.txt".
+CLooG, MPC, libiconv, GMP, and MPFR are each licensed under the LGPLv3, a
+somewhat more permissive version of the GPL; see "COPYING3.LIB-gcc-tdm.txt". ISL
+and winpthreads use an "MIT-style" license, reproduced in "COPYING.ISL.txt" and
+"COPYING.winpthreads.txt".

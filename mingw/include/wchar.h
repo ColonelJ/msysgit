@@ -143,10 +143,13 @@ _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wpopen (const wchar_t*, const wchar_t*);
 #endif	/* __MSVCRT__ */
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
-int __cdecl __MINGW_NOTHROW snwprintf (wchar_t* s, size_t n, const wchar_t*  format, ...);
+int __cdecl __MINGW_NOTHROW snwprintf (wchar_t*, size_t, const wchar_t*, ...);
+int __cdecl __MINGW_NOTHROW vsnwprintf (wchar_t*, size_t, const wchar_t*, __VALIST);
+#ifndef __NO_INLINE__
 __CRT_INLINE int __cdecl __MINGW_NOTHROW
 vsnwprintf (wchar_t* s, size_t n, const wchar_t* format, __VALIST arg)
   { return _vsnwprintf ( s, n, format, arg);}
+#endif
 int __cdecl __MINGW_NOTHROW vwscanf (const wchar_t * __restrict__, __VALIST);
 int __cdecl __MINGW_NOTHROW vfwscanf (FILE * __restrict__,
 		       const wchar_t * __restrict__, __VALIST);
@@ -182,12 +185,23 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
 #ifdef __MSVCRT__
 /* wide function prototypes, also declared in time.h */
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime (const struct tm*);
+#if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t*);
+#endif
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrdate (wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrtime (wchar_t*);
 #if __MSVCRT_VERSION__ >= 0x601
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime64 (const __time64_t*);
 #endif
+#if __MSVCRT_VERSION__ >= 0x0800
+_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32 (const __time32_t*);
+#ifndef _USE_32BIT_TIME_T
+_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime64 (_v)); }
+#else
+_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime32 (_v)); }
+#endif
+#endif
+
 #endif /* __MSVCRT__ */
 #endif /* __STRICT_ANSI__ */
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
@@ -247,9 +261,12 @@ _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW __wcserror(const wchar_t*);
 
 #ifndef	_NO_OLDNAMES
 /* NOTE: There is no _wcscmpi, but this is for compatibility. */
+int __cdecl __MINGW_NOTHROW wcscmpi (const wchar_t *, const wchar_t *);
+#ifndef __NO_INLINE__
 __CRT_INLINE int __cdecl __MINGW_NOTHROW
 wcscmpi (const wchar_t * __ws1, const wchar_t * __ws2)
   {return _wcsicmp (__ws1, __ws2);}
+#endif
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsdup (const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	wcsicmp (const wchar_t*, const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	wcsicoll (const wchar_t*, const wchar_t*);
@@ -349,6 +366,35 @@ struct __wfinddata64_t {
         wchar_t     name[260];
 };
 #endif
+#if __MSVCRT_VERSION__ >= 0x0800
+#include <stdio.h>
+struct __wfinddata32_t {
+	unsigned	attrib;
+	__time32_t	time_create;
+	__time32_t	time_access;
+	__time32_t	time_write;
+	__int32		size;
+	wchar_t		name[FILENAME_MAX];
+};
+
+struct _wfinddata32i64_t {
+	unsigned	attrib;
+	__time32_t	time_create;
+	__time32_t	time_access;
+	__time32_t	time_write;
+	__int64		size;
+	wchar_t		name[FILENAME_MAX];
+};
+
+struct _wfinddata64i32_t {
+	unsigned	attrib;
+	__time64_t	time_create;
+	__time64_t	time_access;
+	__time64_t	time_write;
+	__int32		size;
+	wchar_t		name[FILENAME_MAX];
+};
+#endif /* __MSVCRT_VERSION__ >= 0x0800 */
 #define _WFINDDATA_T_DEFINED
 #endif
 
@@ -361,18 +407,43 @@ struct __wfinddata64_t {
 _CRTIMP int __cdecl __MINGW_NOTHROW	_waccess (const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wchmod (const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wcreat (const wchar_t*, int);
+#if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t*, struct _wfinddata_t *);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wfindnext (long, struct _wfinddata_t *);
+#endif
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wunlink (const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wopen (const wchar_t*, int, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wsopen (const wchar_t*, int, int, ...);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wmktemp (wchar_t*);
+#if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t*, struct _wfinddatai64_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW 	_wfindnexti64 (long, struct _wfinddatai64_t*);
+#else
+_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32i64 (const wchar_t*, struct _wfinddata32i64_t*);
+_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
+_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (long, struct _wfinddata32i64_t*);
+_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (long, struct _wfinddata64i32_t*);
+#endif /* __MSVCRT_VERSION__ < 0x0800 */
 #if __MSVCRT_VERSION__ >= 0x0601
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct __wfinddata64_t*); 
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct __wfinddata64_t*);
 #endif /* __MSVCRT_VERSION__ >= 0x0601 */
+#if __MSVCRT_VERSION__ >= 0x0800
+_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32 (const wchar_t*, struct __wfinddata32_t*);
+_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32 (long, struct __wfinddata32_t*);
+#ifndef _USE_32BIT_TIME_T
+_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst64i32 (_v1,(struct _wfinddata64i32_t*)_v2)); }
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext64i32  (_v1,(struct _wfinddata64i32_t*)_v2)); }
+_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst64 (_v1,(struct __wfinddata64_t*)_v2)); }
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext64  (_v1,(struct __wfinddata64_t*)_v2)); }
+#else
+_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst32 (_v1,(struct __wfinddata32_t*)_v2)); }
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext32  (_v1,(struct __wfinddata32_t*)_v2)); }
+_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext32i64  (_v1,(struct _wfinddata32i64_t*)_v2)); }
+#endif /* !_USE_32BIT_TIME_T*/
+#endif /* __MSVCRT_VERSION__ >= 0x0800 */
+
 #endif /* defined (__MSVCRT__) */
 #define _WIO_DEFINED
 #endif /* _WIO_DEFINED */
@@ -462,7 +533,51 @@ struct __stat64
     __time64_t st_mtime;
     __time64_t st_ctime;
 };
-#endif  /* __MSVCRT_VERSION__ */
+#endif  /* __MSVCRT_VERSION__ >= 0x0601*/
+
+#if __MSVCRT_VERSION__ >= 0x0800
+struct __stat32
+{
+	_dev_t		st_dev;
+	_ino_t		st_ino;
+	_mode_t		st_mode;
+	short		st_nlink;
+	short		st_uid;
+	short		st_gid;
+	_dev_t		st_rdev;
+	__int32		st_size;
+	__time32_t	st_atime;
+	__time32_t	st_mtime;
+	__time32_t	st_ctime;
+};
+struct _stat32i64 {
+	_dev_t		st_dev;
+	_ino_t		st_ino;
+	_mode_t		st_mode;
+	short		st_nlink;
+	short		st_uid;
+	short		st_gid;
+	_dev_t		st_rdev;
+	__int64		st_size;
+	__time32_t	st_atime;
+	__time32_t	st_mtime;
+	__time32_t	st_ctime;
+};
+struct _stat64i32 {
+	_dev_t		st_dev;
+	_ino_t		st_ino;
+	_mode_t		st_mode;
+	short		st_nlink;
+	short		st_uid;
+	short		st_gid;
+	_dev_t		st_rdev;
+	__int32		st_size;
+	__time64_t	st_atime;
+	__time64_t	st_mtime;
+	__time64_t	st_ctime;
+};
+#endif /* __MSVCRT_VERSION__ >= 0x0800 */
+
 #endif  /* __MSVCRT__ */
 #define _STAT_DEFINED
 #endif /* _STAT_DEFINED */
@@ -470,11 +585,25 @@ struct __stat64
 #if !defined ( _WSTAT_DEFINED)
 /* also declared in sys/stat.h */
 #if defined __MSVCRT__
+#if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t*, struct _stat*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t*, struct _stati64*);
+#endif /* __MSVCRT_VERSION__ < 0x0800 */
 #if __MSVCRT_VERSION__ >= 0x0601
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct __stat64*);
 #endif /* __MSVCRT_VERSION__ >= 0x0601 */
+#if __MSVCRT_VERSION__ >= 0x0800
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat32 (const wchar_t*, struct __stat32*);
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat32i64 (const wchar_t*, struct _stat32i64*);
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat64i32 (const wchar_t*, struct _stat64i32*);
+#ifndef _USE_32BIT_TIME_T
+_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t* _v1, struct _stat* _v2)	     { return(_wstat64i32 (_v1,(struct _stat64i32*)_v2)); }
+_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _stati64* _v2) { return(_wstat64 (_v1,(struct __stat64*)_v2)); }
+#else
+_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t* _v1, struct _stat* _v2)	     { return(_wstat32 (_v1,(struct __stat32*)_v2)); }
+_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _stati64* _v2) { return(_wstat32i64 (_v1,(struct _stat32i64*)_v2)); }
+#endif /* !_USE_32BIT_TIME_T */
+#endif /* __MSVCRT_VERSION__ >= 0x0800 */
 #endif  /* __MSVCRT__ */
 #define _WSTAT_DEFINED
 #endif /* ! _WSTAT_DEFIND  */

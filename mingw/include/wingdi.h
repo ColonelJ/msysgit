@@ -358,7 +358,7 @@ extern "C" {
 #define OUT_RASTER_PRECIS	6
 #define OUT_TT_ONLY_PRECIS	7
 #define OUT_OUTLINE_PRECIS	8
-//http://www.pinvoke.net/default.aspx/Structures/LOGFONT.html
+/* http://www.pinvoke.net/default.aspx/Structures/LOGFONT.html */
 #define OUT_PS_ONLY_PRECIS      10
 #define CLIP_DEFAULT_PRECIS	0
 #define CLIP_CHARACTER_PRECIS	1
@@ -372,6 +372,9 @@ extern "C" {
 #define PROOF_QUALITY	2
 #define NONANTIALIASED_QUALITY 3
 #define ANTIALIASED_QUALITY 4
+#if _WIN32_WINNT >= 0x0500
+#define CLEARTYPE_QUALITY 5
+#endif
 #define DEFAULT_PITCH	0
 #define FIXED_PITCH	1
 #define VARIABLE_PITCH	2
@@ -1502,9 +1505,11 @@ typedef struct _devicemodeA {
       short dmDefaultSource; 
       short dmPrintQuality; 
     } DUMMYSTRUCTNAME;
-    POINTL dmPosition;
-    DWORD  dmDisplayOrientation;
-    DWORD  dmDisplayFixedOutput;
+    _ANONYMOUS_STRUCT struct {
+      POINTL dmPosition;
+      DWORD  dmDisplayOrientation;
+      DWORD  dmDisplayFixedOutput;
+    } DUMMYSTRUCTNAME2;
   } DUMMYUNIONNAME;
 
   short  dmColor; 
@@ -1553,9 +1558,11 @@ typedef struct _devicemodeW {
       short dmDefaultSource; 
       short dmPrintQuality; 
     } DUMMYSTRUCTNAME;
-    POINTL dmPosition;
-    DWORD  dmDisplayOrientation;
-    DWORD  dmDisplayFixedOutput;
+    _ANONYMOUS_STRUCT struct {
+      POINTL dmPosition;
+      DWORD  dmDisplayOrientation;
+      DWORD  dmDisplayFixedOutput;
+    } DUMMYSTRUCTNAME2;
   } DUMMYUNIONNAME;
 
   short  dmColor; 
@@ -2654,7 +2661,7 @@ typedef struct _DISPLAY_DEVICEW {
 
 typedef BOOL (CALLBACK *ABORTPROC)(HDC,int);
 typedef int (CALLBACK *MFENUMPROC)(HDC,HANDLETABLE*,METARECORD*,int,LPARAM);
-typedef int (CALLBACK *ENHMFENUMPROC)(HDC,HANDLETABLE*,ENHMETARECORD*,int,LPARAM);
+typedef int (CALLBACK *ENHMFENUMPROC)(HDC,HANDLETABLE*,const ENHMETARECORD*,int,LPARAM);
 typedef int (CALLBACK *OLDFONTENUMPROCA)(const LOGFONTA*,const TEXTMETRICA*,DWORD,LPARAM);
 typedef int (CALLBACK *OLDFONTENUMPROCW)(const LOGFONTW*,const TEXTMETRICW*,DWORD,LPARAM);
 typedef OLDFONTENUMPROCA FONTENUMPROCA;

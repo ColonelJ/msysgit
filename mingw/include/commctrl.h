@@ -1055,8 +1055,8 @@ extern "C" {
 #define LVIF_NORECOMPUTE 2048
 #endif
 #if (_WIN32_WINNT >= 0x0501)
-#define LVIF_GROUPID 128
-#define LVIF_COLUMNS 256
+#define LVIF_GROUPID 256
+#define LVIF_COLUMNS 512
 #endif
 #define LVIS_FOCUSED	1
 #define LVIS_SELECTED	2
@@ -1860,6 +1860,12 @@ extern "C" {
 #define MAX_LINKID_TEXT	48
 #define L_MAX_URL_LENGTH	2084
 #endif
+
+typedef struct tagNMTCKEYDOWN {
+  NMHDR hdr;
+  WORD  wVKey;
+  UINT  flags;
+} NMTCKEYDOWN;
 
 #ifndef RC_INVOKED
 typedef struct tagCOMBOBOXEXITEMA{
@@ -2712,22 +2718,24 @@ typedef struct _TV_KEYDOWN {
 	WORD wVKey;
 	UINT flags;
 } TV_KEYDOWN;
-typedef struct _TC_ITEMHEADERA {
+typedef struct tagTCITEMHEADERA {
 	UINT mask;
 	UINT lpReserved1;
 	UINT lpReserved2;
 	LPSTR pszText;
 	int cchTextMax;
 	int iImage;
-} TC_ITEMHEADERA;
-typedef struct _TC_ITEMHEADERW {
+} TCITEMHEADERA, *LPTCITEMHEADERA;
+#define TC_ITEMHEADERA TCITEMHEADERA
+typedef struct tagTCITEMHEADERW {
 	UINT mask;
 	UINT lpReserved1;
 	UINT lpReserved2;
 	LPWSTR pszText;
 	int cchTextMax;
 	int iImage;
-} TC_ITEMHEADERW;
+} TCITEMHEADERW, *LPTCITEMHEADERW;
+#define TC_ITEMHEADERW TCITEMHEADERW
 typedef struct tagTCITEMA {
 	UINT mask;
 #if (_WIN32_IE >= 0x0300)
@@ -2985,6 +2993,9 @@ void WINAPI DrawInsert(HWND,HWND,int);
 void WINAPI DrawStatusTextA(HDC,LPRECT,LPCSTR,UINT);
 void WINAPI DrawStatusTextW(HDC,LPRECT,LPCWSTR,UINT);
 void WINAPI GetEffectiveClientRect(HWND,LPRECT,LPINT);
+#if (_WIN32_IE >= 0x0500)
+LANGID WINAPI GetMUILanguage(VOID);
+#endif
 #define Header_GetItemCount(w) (int)SNDMSG((w),HDM_GETITEMCOUNT,0,0)
 #define Header_InsertItem(w,i,phdi) (int)SNDMSG((w),HDM_INSERTITEM,(WPARAM)(int)(i),(LPARAM)(const HD_ITEM*)(phdi))
 #define Header_DeleteItem(w,i) (BOOL)SNDMSG((w),HDM_DELETEITEM,(WPARAM)(int)(i),0)
@@ -3090,6 +3101,9 @@ HIMAGELIST WINAPI ImageList_Duplicate(HIMAGELIST himl);
 void WINAPI InitCommonControls(void);
 #if (_WIN32_IE >= 0x0300)
 BOOL WINAPI InitCommonControlsEx(LPINITCOMMONCONTROLSEX);
+#endif
+#if (_WIN32_IE >= 0x0500)
+VOID WINAPI InitMUILanguage(LANGID);
 #endif
 int WINAPI LBItemFromPt(HWND,POINT,BOOL);
 #define ListView_GetBkColor(w) (COLORREF)SNDMSG((w),LVM_GETBKCOLOR,0,0)
@@ -3524,6 +3538,8 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TVN_BEGINLABELEDIT TVN_BEGINLABELEDITW
 #define TVN_ENDLABELEDIT TVN_ENDLABELEDITW
 #define TC_ITEMHEADER TC_ITEMHEADERW
+#define TCITEMHEADER TCITEMHEADERW
+#define LPTCITEMHEADER LPTCITEMHEADERW
 #define TC_ITEM TC_ITEMW
 #define TCITEM TCITEMW
 #define LPTCITEM LPTCITEMW
@@ -3700,6 +3716,8 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TVN_BEGINLABELEDIT TVN_BEGINLABELEDITA
 #define TVN_ENDLABELEDIT TVN_ENDLABELEDITA
 #define TC_ITEMHEADER TC_ITEMHEADERA
+#define TCITEMHEADER TCITEMHEADERA
+#define LPTCITEMHEADER LPTCITEMHEADERA
 #define TC_ITEM TC_ITEMA
 #define TCITEM TCITEMA
 #define LPTCITEM LPTCITEMA
