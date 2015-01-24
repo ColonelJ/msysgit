@@ -1,7 +1,7 @@
-From d94399709e919ddd312659ed5f6d53b242992126 Mon Sep 17 00:00:00 2001
+From 842c6c2f84dd15a979e2315cac94a9478a9e968f Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:22:54 +0100
-Subject: [PATCH 5/7] Add one forgotten #ifndef O_NONBLOCK ... #endif
+Subject: [PATCH 5/8] Add one forgotten #ifndef O_NONBLOCK ... #endif
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
@@ -23,5 +23,5 @@ index d49c29a..6aac84a 100644
  		}
  
 -- 
-2.1.0
+1.9.5.msysgit.0.4.gceda007
 

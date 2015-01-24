@@ -1,7 +1,7 @@
-From a974135233e293e08c1edc76b981749ec41fcf46 Mon Sep 17 00:00:00 2001
+From e72849260e8f0164ec60a9335e084c61db6ec26a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:23:24 +0100
-Subject: [PATCH 6/7] On msysGit, include the whole regex.c
+Subject: [PATCH 6/8] On msysGit, include the whole regex.c
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
@@ -23,5 +23,5 @@ index d8a5675..664af34 100644
  private int match(struct magic_set *, struct magic *, uint32_t,
      const unsigned char *, size_t, int);
 -- 
-2.1.0
+1.9.5.msysgit.0.4.gceda007
 

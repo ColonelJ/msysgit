@@ -1,7 +1,7 @@
-From f3fa06f96b72907973633a3affa55a1d74ead4db Mon Sep 17 00:00:00 2001
+From 3e1b29eb1dda508ee78b02591b927f3fc03679d6 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:22:32 +0100
-Subject: [PATCH 4/7] Avoid using ELOOP on Windows
+Subject: [PATCH 4/8] Avoid using ELOOP on Windows
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
@@ -25,5 +25,5 @@ index 537fb14..a848f15 100644
  		if (ms->flags & MAGIC_ERROR) {
  			file_error(ms, err, errfmt, buf);
 -- 
-2.1.0
+1.9.5.msysgit.0.4.gceda007
 
