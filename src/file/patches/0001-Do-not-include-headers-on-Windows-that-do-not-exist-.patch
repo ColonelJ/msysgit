@@ -1,7 +1,7 @@
 From 1a4fd39dff38b7a4edb7fd5ad8ed35c61654bac8 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:20:14 +0100
-Subject: [PATCH 1/8] Do not include headers on Windows that do not exist there
+Subject: [PATCH 1/7] Do not include headers on Windows that do not exist there
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---

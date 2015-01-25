@@ -1,7 +1,7 @@
-From 931008d6841da1f99a0d390a1871052f35bc2c41 Mon Sep 17 00:00:00 2001
+From bf33f627cf7d02d2a52ff35467ed03b4df65dd1b Mon Sep 17 00:00:00 2001
 From: Pat Thoyts <patthoyts@users.sourceforge.net>
 Date: Fri, 10 Sep 2010 10:40:03 +0100
-Subject: [PATCH 3/4] curl: treat .netrc files as text when opening to handle
+Subject: [PATCH 3/3] curl: treat .netrc files as text when opening to handle
  line endings
 
 The .netrc file may well use CRLF on Windows and should be opened using
@@ -26,5 +26,5 @@ index 2c5942a..9228134 100644
      char *tok;
      char *tok_buf;
 -- 
-2.1.0
+1.8.1.msysgit.1
 

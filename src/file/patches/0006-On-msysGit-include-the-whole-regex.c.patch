@@ -1,7 +1,7 @@
 From e72849260e8f0164ec60a9335e084c61db6ec26a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:23:24 +0100
-Subject: [PATCH 6/8] On msysGit, include the whole regex.c
+Subject: [PATCH 6/7] On msysGit, include the whole regex.c
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---

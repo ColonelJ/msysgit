@@ -27,11 +27,6 @@ test -d $DIR || {
 	)
 } || die "Could not check out Poppler"
 
-test ! -d patches ||
-test $(cd $DIR && git rev-list HEAD | wc -l) -gt 1 ||
-(cd $DIR && git am ../patches/*) ||
-die "Could not apply patches"
-
 (cd $DIR &&
 ./configure --prefix=/mingw	\
 	--disable-splash-output	\

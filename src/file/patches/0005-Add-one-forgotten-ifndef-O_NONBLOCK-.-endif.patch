@@ -1,7 +1,7 @@
 From 842c6c2f84dd15a979e2315cac94a9478a9e968f Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:22:54 +0100
-Subject: [PATCH 5/8] Add one forgotten #ifndef O_NONBLOCK ... #endif
+Subject: [PATCH 5/7] Add one forgotten #ifndef O_NONBLOCK ... #endif
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---

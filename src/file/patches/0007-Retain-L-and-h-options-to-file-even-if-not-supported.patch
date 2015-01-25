@@ -1,7 +1,7 @@
 From 5130451c47db0ec69af7f957f7f24fb7d1119b5f Mon Sep 17 00:00:00 2001
 From: KernelJ <kernelj@epixxware.com>
 Date: Sat, 24 Jan 2015 22:04:18 +0000
-Subject: [PATCH 7/8] Retain -L and -h options to file even if not supported
+Subject: [PATCH 7/7] Retain -L and -h options to file even if not supported
 
 ---
  src/file.c      | 6 ++++--

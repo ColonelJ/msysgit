@@ -1,7 +1,7 @@
 From 3e1b29eb1dda508ee78b02591b927f3fc03679d6 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:22:32 +0100
-Subject: [PATCH 4/8] Avoid using ELOOP on Windows
+Subject: [PATCH 4/7] Avoid using ELOOP on Windows
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---

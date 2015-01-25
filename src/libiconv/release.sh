@@ -25,11 +25,6 @@ test -d $DIR || {
 	)
 } || die "Could not check out $FILE"
 
-test ! -d patches ||
-test $(cd $DIR && git rev-list HEAD | wc -l) -gt 1 ||
-(cd $DIR && git am ../patches/*) ||
-die "Could not apply patches"
-
 (cd $DIR &&
 export am_cv_proto_iconv_arg1= &&
 export am_cv_proto_iconv="extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);" &&
