@@ -29,7 +29,7 @@ test -d $DIR || {
  make -f win32/Makefile.gcc clean &&
  make -f win32/Makefile.gcc &&
  index=$(/share/msysGit/pre-install.sh) &&
- make -f win32/Makefile.gcc INCLUDE_PATH=/mingw/include \
+ make -f win32/Makefile.gcc SHARED_MODE=1 INCLUDE_PATH=/mingw/include \
    LIBRARY_PATH=/mingw/lib BINARY_PATH=/mingw/bin install &&
  /share/msysGit/post-install.sh $index "Install $FILE"
 ) || die "Could not install $FILE"
