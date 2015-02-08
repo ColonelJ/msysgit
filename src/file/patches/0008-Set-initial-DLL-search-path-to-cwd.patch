@@ -1,0 +1,25 @@
+From 6a662470f8be8dc944d056f9c62f757c12d43b87 Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 8 Feb 2015 19:49:50 +0000
+Subject: [PATCH 8/8] Set initial DLL search path to cwd
+
+---
+ ltmain.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ltmain.sh b/ltmain.sh
+index 199b772..9ad4238 100644
+--- a/ltmain.sh
++++ b/ltmain.sh
+@@ -1182,7 +1182,7 @@ EOF
+     old_deplibs=
+     compiler_flags=
+     linker_flags=
+-    dllsearchpath=
++    dllsearchpath=.
+     lib_search_path=`pwd`
+     inst_prefix_dir=
+ 
+-- 
+2.1.0
+

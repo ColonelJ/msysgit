@@ -1,7 +1,7 @@
-From 6283f73679f495e02c13324764afa940461470d5 Mon Sep 17 00:00:00 2001
+From ed548c5d9beb673df7165260db9d04c71ae81d44 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 7 Dec 2009 17:21:52 +0100
-Subject: [PATCH 3/7] On Windows, we do not have fork()
+Subject: [PATCH 3/8] On Windows, we do not have fork()
 
 Unfortunately, that means that we cannot easily uncompress if it is
 not covered by libz.
@@ -33,5 +33,5 @@ index 10b2158..40b11bd 100644
 +#endif /* WIN32 */
  }
 -- 
-1.9.5.msysgit.0.4.gceda007
+2.1.0
 

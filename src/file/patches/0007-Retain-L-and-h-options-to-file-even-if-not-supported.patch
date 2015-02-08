@@ -1,7 +1,7 @@
-From 5130451c47db0ec69af7f957f7f24fb7d1119b5f Mon Sep 17 00:00:00 2001
+From 1a38cf12103ead32f6346821b9e2b04f24a82177 Mon Sep 17 00:00:00 2001
 From: KernelJ <kernelj@epixxware.com>
 Date: Sat, 24 Jan 2015 22:04:18 +0000
-Subject: [PATCH 7/7] Retain -L and -h options to file even if not supported
+Subject: [PATCH 7/8] Retain -L and -h options to file even if not supported
 
 ---
  src/file.c      | 6 ++++--
@@ -48,5 +48,5 @@ index 1a73e87..7496aca 100644
  OPT('N', "no-pad", 0, "               do not pad output\n")
  OPT('0', "print0", 0, "               terminate filenames with ASCII NUL\n")
 -- 
-1.9.5.msysgit.0.4.gceda007
+2.1.0
 
