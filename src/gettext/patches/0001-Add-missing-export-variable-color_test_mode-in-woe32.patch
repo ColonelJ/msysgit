@@ -1,0 +1,24 @@
+From 6dd112e64a3aed5ee77b99aae47c27890940bbe1 Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 8 Feb 2015 22:08:51 +0000
+Subject: [PATCH] Add missing export variable color_test_mode in woe32dll
+
+---
+ gettext-tools/woe32dll/gettextsrc-exports.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gettext-tools/woe32dll/gettextsrc-exports.c b/gettext-tools/woe32dll/gettextsrc-exports.c
+index b1c4a53..c67280c 100644
+--- a/gettext-tools/woe32dll/gettextsrc-exports.c
++++ b/gettext-tools/woe32dll/gettextsrc-exports.c
+@@ -19,6 +19,7 @@
+ 
+ VARIABLE(allow_duplicates)
+ VARIABLE(color_mode)
++VARIABLE(color_test_mode)
+ VARIABLE(format_language)
+ VARIABLE(format_language_pretty)
+ VARIABLE(formatstring_awk)
+-- 
+2.1.0
+
