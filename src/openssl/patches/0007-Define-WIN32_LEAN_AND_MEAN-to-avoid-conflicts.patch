@@ -1,0 +1,219 @@
+From 01a169b38cfca9ec2e2188029558d16601e55833 Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Mon, 9 Feb 2015 01:37:35 +0000
+Subject: [PATCH 7/7] Define WIN32_LEAN_AND_MEAN to avoid conflicts
+
+---
+ apps/winrand.c                | 1 +
+ crypto/LPdir_win.c            | 1 +
+ crypto/comp/c_zlib.c          | 1 +
+ crypto/cryptlib.c             | 1 +
+ crypto/des/read_pwd.c         | 1 +
+ crypto/rand/rand.h            | 1 +
+ crypto/rand/rand_win.c        | 1 +
+ crypto/threads/mttest.c       | 1 +
+ crypto/threads/th-lock.c      | 1 +
+ crypto/tmdiff.c               | 1 +
+ crypto/ui/ui_openssl.c        | 1 +
+ e_os.h                        | 1 +
+ engines/e_capi.c              | 1 +
+ engines/vendor_defns/cswift.h | 1 +
+ include/openssl/rand.h        | 1 +
+ ms/uplink.c                   | 1 +
+ 16 files changed, 16 insertions(+)
+
+diff --git a/apps/winrand.c b/apps/winrand.c
+index 59bede3..7d80ab5 100644
+--- a/apps/winrand.c
++++ b/apps/winrand.c
+@@ -59,6 +59,7 @@
+  * random data to filename or .rnd
+  */
+ 
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #include <openssl/opensslv.h>
+ #include <openssl/rand.h>
+diff --git a/crypto/LPdir_win.c b/crypto/LPdir_win.c
+index a202bcd..13c6a27 100644
+--- a/crypto/LPdir_win.c
++++ b/crypto/LPdir_win.c
+@@ -23,6 +23,7 @@
+  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #include <tchar.h>
+ #ifndef LPDIR_H
+diff --git a/crypto/comp/c_zlib.c b/crypto/comp/c_zlib.c
+index 8df7792..44ee934 100644
+--- a/crypto/comp/c_zlib.c
++++ b/crypto/comp/c_zlib.c
+@@ -88,6 +88,7 @@ static COMP_METHOD zlib_stateful_method={
+  * and we do not link to a .LIB file when ZLIB_SHARED is set.
+  */
+ #if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
++# define WIN32_LEAN_AND_MEAN
+ # include <windows.h>
+ #endif /* !(OPENSSL_SYS_WINDOWS || OPENSSL_SYS_WIN32) */
+ 
+diff --git a/crypto/cryptlib.c b/crypto/cryptlib.c
+index dec3286..183672f 100644
+--- a/crypto/cryptlib.c
++++ b/crypto/cryptlib.c
+@@ -364,6 +364,7 @@ static int DllInit(void)
+ 
+ #ifdef __CYGWIN__
+ /* pick DLL_[PROCESS|THREAD]_[ATTACH|DETACH] definitions */
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ 
+diff --git a/crypto/des/read_pwd.c b/crypto/des/read_pwd.c
+index ce5fa00..21a3781 100644
+--- a/crypto/des/read_pwd.c
++++ b/crypto/des/read_pwd.c
+@@ -100,6 +100,7 @@
+ #endif
+ 
+ #ifdef WIN_CONSOLE_BUG
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #ifndef OPENSSL_SYS_WINCE
+ #include <wincon.h>
+diff --git a/crypto/rand/rand.h b/crypto/rand/rand.h
+index ea89153..9becdee 100644
+--- a/crypto/rand/rand.h
++++ b/crypto/rand/rand.h
+@@ -64,6 +64,7 @@
+ #include <openssl/e_os2.h>
+ 
+ #if defined(OPENSSL_SYS_WINDOWS)
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ 
+diff --git a/crypto/rand/rand_win.c b/crypto/rand/rand_win.c
+index 5d134e1..2542d1b 100644
+--- a/crypto/rand/rand_win.c
++++ b/crypto/rand/rand_win.c
+@@ -114,6 +114,7 @@
+ #include "rand_lcl.h"
+ 
+ #if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #ifndef _WIN32_WINNT
+ # define _WIN32_WINNT 0x0400
+diff --git a/crypto/threads/mttest.c b/crypto/threads/mttest.c
+index f6f3df4..0468f4f 100644
+--- a/crypto/threads/mttest.c
++++ b/crypto/threads/mttest.c
+@@ -64,6 +64,7 @@
+ #include <typedefs.h>
+ #endif
+ #ifdef OPENSSL_SYS_WIN32
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ #ifdef SOLARIS
+diff --git a/crypto/threads/th-lock.c b/crypto/threads/th-lock.c
+index 14aae5f..15e5da4 100644
+--- a/crypto/threads/th-lock.c
++++ b/crypto/threads/th-lock.c
+@@ -64,6 +64,7 @@
+ #include <typedefs.h>
+ #endif
+ #ifdef OPENSSL_SYS_WIN32
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ #ifdef SOLARIS
+diff --git a/crypto/tmdiff.c b/crypto/tmdiff.c
+index 1c6e052..0be26c2 100644
+--- a/crypto/tmdiff.c
++++ b/crypto/tmdiff.c
+@@ -103,6 +103,7 @@
+ #endif
+ 
+ #ifdef OPENSSL_SYS_WIN32
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ 
+diff --git a/crypto/ui/ui_openssl.c b/crypto/ui/ui_openssl.c
+index 06270f0..10de1d2 100644
+--- a/crypto/ui/ui_openssl.c
++++ b/crypto/ui/ui_openssl.c
+@@ -165,6 +165,7 @@
+ #endif
+ 
+ #ifdef WIN_CONSOLE_BUG
++#define WIN32_LEAN_AND_MEAN
+ # include <windows.h>
+ #ifndef OPENSSL_SYS_WINCE
+ # include <wincon.h>
+diff --git a/e_os.h b/e_os.h
+index ca4044b..06a0a32 100644
+--- a/e_os.h
++++ b/e_os.h
+@@ -267,6 +267,7 @@ extern "C" {
+ 	*/
+ #      define _WIN32_WINNT 0x0400
+ #    endif
++#    define WIN32_LEAN_AND_MEAN
+ #    include <windows.h>
+ #    include <stdio.h>
+ #    include <stddef.h>
+diff --git a/engines/e_capi.c b/engines/e_capi.c
+index e332fb8..62af716 100644
+--- a/engines/e_capi.c
++++ b/engines/e_capi.c
+@@ -63,6 +63,7 @@
+ 
+ #include <openssl/rsa.h>
+ 
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ 
+ #ifndef _WIN32_WINNT
+diff --git a/engines/vendor_defns/cswift.h b/engines/vendor_defns/cswift.h
+index 6007932..fd9d057 100644
+--- a/engines/vendor_defns/cswift.h
++++ b/engines/vendor_defns/cswift.h
+@@ -157,6 +157,7 @@ typedef struct _SW_LARGENUMBER {
+ } SW_LARGENUMBER;               
+ 
+ #if defined(OPENSSL_SYS_WIN32)
++    #define WIN32_LEAN_AND_MEAN
+     #include <windows.h>
+     typedef HANDLE          SW_OSHANDLE;          /* handle to kernel object */
+     #define SW_OS_INVALID_HANDLE  INVALID_HANDLE_VALUE
+diff --git a/include/openssl/rand.h b/include/openssl/rand.h
+index ea89153..9becdee 100644
+--- a/include/openssl/rand.h
++++ b/include/openssl/rand.h
+@@ -64,6 +64,7 @@
+ #include <openssl/e_os2.h>
+ 
+ #if defined(OPENSSL_SYS_WINDOWS)
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #endif
+ 
+diff --git a/ms/uplink.c b/ms/uplink.c
+index 6d59cb1..48cc114 100644
+--- a/ms/uplink.c
++++ b/ms/uplink.c
+@@ -8,6 +8,7 @@
+ #define UNICODE
+ #endif
+ 
++#define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ #include <tchar.h>
+ #include <stdio.h>
+-- 
+2.1.0
+

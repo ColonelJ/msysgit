@@ -1,12 +1,12 @@
-From 5eaed2b8a6c2b9917c5423ac78befdec18e8cb0a Mon Sep 17 00:00:00 2001
+From 1fbec45e091703cf62e2c73b85d5cf1c30844e7f Mon Sep 17 00:00:00 2001
 From: Erik Faye-Lund <kusmabite@gmail.com>
 Date: Mon, 27 Jul 2009 23:27:04 +0200
-Subject: [PATCH] generate import lib
+Subject: [PATCH 5/7] generate import lib
 
 Signed-off-by: Erik Faye-Lund <kusmabite@gmail.com>
 ---
- util/pl/Mingw32.pl |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ util/pl/Mingw32.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/util/pl/Mingw32.pl b/util/pl/Mingw32.pl
 index 87c2ccc..10a3d05 100644
@@ -22,5 +22,5 @@ index 87c2ccc..10a3d05 100644
  
  sub do_link_rule
 -- 
-1.6.3.2
+2.1.0
 

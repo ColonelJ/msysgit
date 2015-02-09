@@ -1,15 +1,15 @@
-From b224d33994b5ff456b70f083945599117f58f0de Mon Sep 17 00:00:00 2001
+From fbd56d5078b82a0ee5702cc5a9d40e6df00e5054 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 15 Jul 2009 03:40:27 +0200
-Subject: [PATCH 2/4] Avoid compiler error
+Subject: [PATCH 2/7] Avoid compiler error
 
 When a variable is declared "extern", and we want to implement it now,
 we cannot really make it "static" any longer.
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
- e_os2.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ e_os2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/e_os2.h b/e_os2.h
 index 9da0b65..6daad83 100644
@@ -25,5 +25,5 @@ index 9da0b65..6daad83 100644
  # define OPENSSL_GLOBAL_REF(name) (*(_shadow_##name()))
  #else
 -- 
-1.6.3.2.1299.gee46c
+2.1.0
 

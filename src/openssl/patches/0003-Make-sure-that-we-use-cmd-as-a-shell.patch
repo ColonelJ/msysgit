@@ -1,7 +1,7 @@
-From 4bfa8ec6ca0d1d9b97cf2c40d533e632322c1f1d Mon Sep 17 00:00:00 2001
+From 8a20e5e857d80bd53cf8f416d8dab69a1f5f893a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 15 Jul 2009 03:41:28 +0200
-Subject: [PATCH 3/4] Make sure that we use "cmd" as a shell
+Subject: [PATCH 3/7] Make sure that we use "cmd" as a shell
 
 The original idea of the MinGW32 build was probably to run the beast
 from cmd.exe.  As we run it from bash now, let's make sure that "make"
@@ -10,8 +10,8 @@ rather with "cmd".
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
- ms/mingw32.bat |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ ms/mingw32.bat | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/ms/mingw32.bat b/ms/mingw32.bat
 index f9377a8..f85305e 100644
@@ -27,5 +27,5 @@ index f9377a8..f85305e 100644
  
  echo Generating the DLLs and input libraries
 -- 
-1.6.3.2.1299.gee46c
+2.1.0
 
