@@ -1,7 +1,7 @@
-From cbf5379584a8f571d2a67be981102a407406f2b4 Mon Sep 17 00:00:00 2001
+From ff2019e317b85754ad47c7b8ac808d39c04a5798 Mon Sep 17 00:00:00 2001
 From: KernelJ <kernelj@epixxware.com>
 Date: Sun, 18 Jan 2015 21:30:46 +0000
-Subject: [PATCH 2/2] Use sed instead of egrep with o option
+Subject: [PATCH 2/3] Use sed instead of egrep with o option
 
 ---
  Makefile | 2 +-

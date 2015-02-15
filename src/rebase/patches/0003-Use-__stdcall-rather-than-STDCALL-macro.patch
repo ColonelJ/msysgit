@@ -1,0 +1,25 @@
+From 11c73861ae597e432845f612b0d1a628158f4d32 Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 15 Feb 2015 15:14:01 +0000
+Subject: [PATCH 3/3] Use __stdcall rather than STDCALL macro
+
+---
+ imagehelper/imagehelper.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/imagehelper/imagehelper.h b/imagehelper/imagehelper.h
+index a567eb5..ffbd4e2 100644
+--- a/imagehelper/imagehelper.h
++++ b/imagehelper/imagehelper.h
+@@ -64,7 +64,7 @@ typedef enum _IMAGEHLP_STATUS_REASON {
+   BindSymbolsNotUpdated
+ } IMAGEHLP_STATUS_REASON;
+ 
+-typedef BOOL(STDCALL*PIMAGEHLP_STATUS_ROUTINE)(IMAGEHLP_STATUS_REASON,LPSTR,LPSTR,ULONG,ULONG);
++typedef BOOL(__stdcall *PIMAGEHLP_STATUS_ROUTINE)(IMAGEHLP_STATUS_REASON,LPSTR,LPSTR,ULONG,ULONG);
+ 
+ BOOL BindImageEx(
+   DWORD Flags,
+-- 
+2.1.0
+
