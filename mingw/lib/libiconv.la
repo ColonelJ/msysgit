@@ -11,7 +11,7 @@ dlname='../bin/libiconv-2.dll'
 library_names='libiconv.dll.a'
 
 # The name of the static archive.
-old_library=''
+old_library='libiconv.a'
 
 # Linker flags that can not go in dependency_libs.
 inherited_linker_flags=''

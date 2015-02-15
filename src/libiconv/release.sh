@@ -28,7 +28,7 @@ test -d $DIR || {
 (cd $DIR &&
 export am_cv_proto_iconv_arg1= &&
 export am_cv_proto_iconv="extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);" &&
-./configure --prefix=/mingw &&
+./configure --prefix=/mingw --enable-static &&
 make &&
 index=$(/share/msysGit/pre-install.sh) &&
 make install &&
