@@ -6,19 +6,19 @@
 cd "$(dirname "$0")"
 srcdir=$(pwd)
 
-mirror=http://kent.dl.sourceforge.net/project/tcl/Tcl/
-version=8.5.13
+mirror=http://skylink.dl.sourceforge.net/project/tcl/Tcl/
+version=8.6.3
 
-for p in tcl tk
+for p in tcl
 do
 	# get the package
 	u=$mirror$version/$p$version-src.tar.gz
 	b=$(basename $u)
-	test -f $b || curl $u > $b || exit
+	#test -f $b || curl $u > $b || exit
 
 	# unpack it
 	d=$p$version
-	test -d $d || tar xzvf $b || exit
+	#test -d $d || tar xzvf $b || exit
 
 	# compile it
 	shortversion=$(echo $version |
@@ -39,11 +39,11 @@ do
 		cd $d/win &&
 
 		# Record pre-install state
-		index=$(/share/msysGit/pre-install.sh) &&
+		#index=$(/share/msysGit/pre-install.sh) &&
 
 		# Remove old Tcl/Tk files stored in fileList.txt
 		list=$srcdir/fileList-$p.txt
-		cat "$list" | grep -v 'release\.sh$' | (cd / && xargs git rm) &&
+		cat "$list" | grep -v 'release\.sh$' | (cd / && xargs rm -f) &&
 
 		make install &&
 
@@ -51,16 +51,15 @@ do
 		if test ! -f /mingw/bin/$shortprog
 		then
 			ln /mingw/bin/$prog /mingw/bin/$shortprog
-		fi &&
+		fi || exit
 
-		/share/msysGit/post-install.sh $index \
-			"Update $p to version $version" &&
+		#/share/msysGit/post-install.sh $index \
+		#	"Update $p to version $version" &&
 
-		git diff --diff-filter=AM --name-only HEAD^! |
-			sed -e "s/^/\//" > "$list" &&
-		(cd / && git commit -n -C HEAD --amend -- "$list") ||
-
-		exit
+		#git diff --diff-filter=AM --name-only HEAD^! |
+		#	sed -e "s/^/\//" > "$list" &&
+		#(cd / && git commit -n -C HEAD --amend -- "$list") ||
+		#exit
 	)
 done
 
