@@ -6,5 +6,8 @@ LIBS=-limagehlp
 
 all: $(TARGET)
 
+install: $(TARGET)
+	cp $(TARGET) /mingw/bin
+
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^ $(LIBS)
