@@ -1,0 +1,42 @@
+From 50803d798b18570f5b3361b2d4ab196760c5a40a Mon Sep 17 00:00:00 2001
+From: KernelJ <kernelj@epixxware.com>
+Date: Sun, 15 Feb 2015 16:53:05 +0000
+Subject: [PATCH 2/2] Always include string.h and not declare strcmp/strncmp
+
+---
+ getopt.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/getopt.c b/getopt.c
+index 55fad84..2f0a53e 100644
+--- a/getopt.c
++++ b/getopt.c
+@@ -155,13 +155,10 @@ static enum
+ {
+   REQUIRE_ORDER, PERMUTE, RETURN_IN_ORDER
+ } ordering;
+-
+-#ifdef	__GNU_LIBRARY__
+-/* We want to avoid inclusion of string.h with non-GNU libraries
+-   because there are many ways it can cause trouble.
+-   On some systems, it contains special magic macros that don't work
+-   in GCC.  */
++
+ #include <string.h>
++
++#ifdef	__GNU_LIBRARY__
+ #define	my_index	strchr
+ #define	my_strlen	strlen
+ #else
+@@ -171,8 +168,6 @@ static enum
+ 
+ #if __STDC__ || defined(PROTO)
+ extern char *getenv(const char *name);
+-extern int  strcmp (const char *s1, const char *s2);
+-extern int  strncmp(const char *s1, const char *s2, int n);
+ 
+ static int my_strlen(const char *s);
+ static char *my_index (const char *str, int chr);
+-- 
+2.1.0
+
