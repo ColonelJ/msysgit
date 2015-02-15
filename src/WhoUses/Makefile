@@ -4,6 +4,9 @@ OBJECTS=WhoUses.o SystemInfo.o
 
 all: $(TARGET)
 
+install: $(TARGET)
+	cp $(TARGET) /mingw/bin
+
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
