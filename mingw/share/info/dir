@@ -61,3 +61,6 @@ GNU Gettext Utilities
                                 Translate a message with plural.
 * xgettext: (gettext)xgettext Invocation.
                                 Extract strings into a PO file.
+
+Individual utilities
+* msmtp: (msmtp).                               An SMTP client.
