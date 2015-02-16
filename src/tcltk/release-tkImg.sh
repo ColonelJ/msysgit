@@ -18,7 +18,10 @@ url=http://iweb.dl.sourceforge.net/project/tkimg/tkimg/$version/$tar
 patch_tkImg () {
 	init_git &&
 	git rev-parse --verify HEAD^ || {
-		perl -i.bak -pe "s/(MP-RAS.*relid)\'/\\1/" \
+		perl -i.bak -pe "s/(MP-RAS.*relid)\'/\\1/;" \
+			-e "s/ (\\\\\\(error\\\\\\|warning\\\\\\)) / '\\1' /;" \
+			-e 's/exit( ?)\(/return\1\(/;' \
+			-e 's/ ([^ \\=]*\$PATH)([^A-Z;])/ \"\1\"\2/;' -e 's/\$1 \$2/\"\$1\" \"\$2\"/;' \
 			$(find -name configure) &&
 		perl -i.bak -pe "s/EXTERN (int TkimgInitUtilities)/\\1/" \
 			base/tkimg.c &&
@@ -28,7 +31,7 @@ patch_tkImg () {
 
 patch=patch_tkImg
 
-configure_extra=--srcdir=$(pwd)/$dir
+configure_extra="--srcdir=$(pwd)/$dir --enable-threads"
 
 premake_tkImg () {
 	perl -i.bak -pe "s/-L(\S+) -l(tkimgstub\S+)/\\1\/\\2.a/" \
@@ -41,7 +44,7 @@ premake_tkImg () {
 		$(find -name Makefile)
 	perl -i.bak -pe "s/-L(\S+) -l(tifftclstub\S+)/\\1\/\\2.a/" \
 		$(find -name Makefile)
-	perl -i.bak -pe 's/^.*XMD_H.*$/#if !defined(XMD_H) && !defined(_BASETSD_H)/' libjpeg/jmorecfg.h
+	perl -i.bak -pe 's/^.*XMD_H.*$/#if !defined(XMD_H) && !defined(_BASETSD_H) && !defined(_BASETSD_H_)/' libjpeg/jmorecfg.h
 }
 
 premake=premake_tkImg
@@ -64,7 +67,7 @@ test -z "$premake" && premake=true
 
 compile_it () {
 	test -f Makefile || {
-		./configure --prefix=/mingw $configure_extra &&
+		CC=gcc ./configure --prefix=/mingw $configure_extra &&
 		$premake &&
 		make
 	}
